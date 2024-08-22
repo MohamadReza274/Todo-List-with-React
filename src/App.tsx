@@ -1,9 +1,10 @@
+import TodoList from "./Components/TodoList.tsx";
 
 
 const App = () => {
     return (
-        <div>
-
+        <div className="p-4">
+           <TodoList />
         </div>
     );
 };
