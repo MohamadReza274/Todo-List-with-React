@@ -1,52 +1,27 @@
 import CardCom from "./Components/Card.tsx";
 import {useTodoStore} from "./store.ts";
+import AddTodo from "@/Components/AddTodo.tsx";
 
 
 const App = () => {
 
     const todos = useTodoStore(state => state.todo);
-    console.log(todos)
-    const addTodo = useTodoStore(state => state.addTodo);
 
     return (
-        <div className="p-4">
-
+        <div className="p-4 flex flex-col justify-center w-[100vw] max-w-[480px]">
             <h1 className={"text-3xl font-bold mb-2"}>To-do List </h1>
             <div className={"p-2"}>
-
                 <div className="flex justify-between">
-
                     <div>
-
                         <h2 className={"text-2xl"}>My Tasks</h2>
-
                         <p className={"pt-2"}>You have {todos.length} Tasks Left!</p>
-
                     </div>
-
-                    <button onClick={() => {
-
-                        addTodo({
-
-                            id: 2,
-
-                            title: "Next.js app for job",
-
-                            description: "Next.js and mongodb app",
-
-                            deadline: "9/12/2024"
-
-                        })
-
-                    }} className={"btn"}>Add Task
-                    </button>
+                    <AddTodo/>
                 </div>
 
-                {todos?.map((todo) => (<CardCom key={todo.id} data={todo}/>))}
-
+                {todos.length === 0 ? <p className={"px-2 py-4 text-xl"}>There is no Todo for now!</p> : todos?.map((todo) => (
+                    <CardCom key={todo.id} data={todo}/>))}
             </div>
-
-            {/*<AddTodo />*/}
         </div>
     );
 };

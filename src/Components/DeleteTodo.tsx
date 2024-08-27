@@ -8,7 +8,8 @@ interface Props {
 
 const DeleteTodo = ({onDelete}: Props) => {
     return (
-        <Button variant={"link"} onClick={onDelete} className={"my-2"}><TrashIcon className={"w-5 h-5 text-error"}/></Button>
+        <Button variant={"link"} onClick={onDelete} className={"my-2"}><TrashIcon
+            className={"w-5 h-5 text-error"}/></Button>
     );
 };
 

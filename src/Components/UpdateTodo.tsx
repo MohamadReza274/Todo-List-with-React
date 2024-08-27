@@ -1,8 +1,8 @@
-import {useState} from "react";
 import {z} from "zod";
+import {useState} from "react";
 import {SubmitHandler, useForm} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod";
-import {useTodoStore} from "../store.ts";
+import {useTodoStore} from "@/store.ts";
 import {
     Dialog,
     DialogContent,
@@ -15,6 +15,8 @@ import {
 import {Button} from "@/Components/ui/button.tsx";
 import {Label} from "@/Components/ui/label.tsx";
 import {Input} from "@/Components/ui/input.tsx";
+import {FilePenLine} from "lucide-react";
+
 
 const schema = z.object({
     title: z.string().min(3),
@@ -24,21 +26,24 @@ const schema = z.object({
 
 type InputTypes = z.infer<typeof schema>;
 
-const AddTodo = () => {
+interface Props extends InputTypes {
+    todo: InputTypes & { id: number }
+}
 
-    const addTodo = useTodoStore(state => state.addTodo)
-    const [open, setOpen] = useState(false)
+const UpdateTodo = ({todo}: Props) => {
+
+    const [open, setOpen] = useState(false);
+    const updateTodo = useTodoStore(state => state.updateTodo)
 
     const {
         register,
         reset,
         handleSubmit,
         formState: {errors, isValid},
-    } = useForm<InputTypes>({resolver: zodResolver(schema)})
+    } = useForm<InputTypes>({resolver: zodResolver(schema), defaultValues: {...todo}})
 
     const onSubmit: SubmitHandler<InputTypes> = (values) => {
-        const todoId = Math.floor(Math.random() * 1000);
-        addTodo({...values, id: todoId});
+        updateTodo(todo.id, {...values, id: todo.id})
         reset();
     }
 
@@ -56,8 +61,8 @@ const AddTodo = () => {
     return (
         <Dialog open={open} onOpenChange={handleModalChange}>
             <DialogTrigger asChild>
-                <Button onClick={handleModalChange} variant="default">
-                    Add Task
+                <Button onClick={handleModalChange} variant="link" size="icon">
+                    <FilePenLine color={"blue"} className="h-4 w-4"/>
                 </Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[425px] rounded-xl">
@@ -116,5 +121,4 @@ const AddTodo = () => {
     );
 };
 
-export default AddTodo;
-
+export default UpdateTodo;

@@ -12,7 +12,7 @@ interface StoreType {
     todo: Todo[];
     addTodo: (todo: Todo) => void;
     deleteTodo: (id: number) => void;
-    // updateTodo: (id: number, data: Todo) => void;
+    updateTodo: (id: number, data: Todo) => void;
 }
 
 export const useTodoStore = create<StoreType>()(devtools(persist((set) => ({
@@ -28,5 +28,11 @@ export const useTodoStore = create<StoreType>()(devtools(persist((set) => ({
         const filteredTodos = state.todo.filter(todo => todo.id !== id);
         return {todo: filteredTodos}
     }),
-    // updateTodo: (id, data) => set((state: { todo }) => (state.todo.map((t) => (t.id === id ? {...data} : t))))
+    updateTodo: (id, data) => set((state) => {
+        const updatedTodo = state.todo.map(t => (
+                t.id === id ? data : t
+            )
+        );
+        return {todo: updatedTodo}
+    })
 }), {name: "todo-store"})))
